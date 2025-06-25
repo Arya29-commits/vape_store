@@ -11,7 +11,7 @@ return new class extends Migration
             $table->id();
             $table->string('nomor_invoice')->unique();
             $table->string('pelanggan')->default('Umum');
-            $table->decimal('grand_total', 15, 2);
+            $table->decimal('total_harga', 15, 2);
             $table->timestamps();
         });
     }

@@ -17,38 +17,36 @@ Route::get('/', function () {
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 // ==================== MASTER DATA ==================
+// Menggunakan Route::resource untuk Barang dan Kategori agar lebih ringkas
+Route::resource('barang', BarangController::class);
+Route::resource('kategori', KategoriController::class)->except(['show']); // Kategori biasanya tidak butuh halaman 'show'
+Route::resource('supplier', SupplierController::class);
 
-// Barang
-Route::get('/barang', [BarangController::class, 'index'])->name('barang.index');
-Route::get('/barang/create', [BarangController::class, 'create'])->name('barang.create');
-Route::post('/barang', [BarangController::class, 'store'])->name('barang.store');
-Route::get('/barang/{barang}/edit', [BarangController::class, 'edit'])->name('barang.edit');
-Route::put('/barang/{barang}', [BarangController::class, 'update'])->name('barang.update');
-Route::delete('/barang/{barang}', [BarangController::class, 'destroy'])->name('barang.destroy');
-Route::get('/kategori/{kategori}/barang', [BarangController::class, 'showByCategory'])->name('barang.by_category');
-
-// Kategori
-Route::resource('/kategori', KategoriController::class);
-
-// Supplier
-Route::get('/supplier', [SupplierController::class, 'index'])->name('supplier.index');
-Route::post('/supplier', [SupplierController::class, 'store'])->name('supplier.store');
-Route::delete('/supplier/{id}', [SupplierController::class, 'destroy'])->name('supplier.destroy');
 
 // ==================== TRANSAKSI ====================
 
-// Penjualan
+// --- Penjualan ---
 Route::get('/penjualan', [PenjualanController::class, 'index'])->name('penjualan.index');
-Route::get('/penjualan/create', [PenjualanController::class, 'create'])->name('penjualan.create');
+Route::get('/penjualan/pos', [PenjualanController::class, 'create'])->name('penjualan.create'); // Ubah ke /pos
 Route::post('/penjualan', [PenjualanController::class, 'store'])->name('penjualan.store');
+Route::get('/penjualan/{penjualan}', [PenjualanController::class, 'show'])->name('penjualan.show');
+// Endpoint API untuk pencarian produk oleh Javascript
+Route::get('/api/search-products', [PenjualanController::class, 'searchProducts'])->name('penjualan.search_products');
 
-// Rute API untuk pencarian produk oleh Javascript
-Route::get('/api/products', [PenjualanController::class, 'fetchProducts'])->name('products.fetch');
 
-// Pembelian
+// --- Pembelian ---
+// Gunakan resource controller untuk pembelian juga
 Route::resource('pembelian', PembelianController::class);
+// Endpoint API untuk pencarian barang di form pembelian
+Route::get('/api/search-all-products', [PembelianController::class, 'searchProducts'])->name('pembelian.search_products');
+
 
 // ==================== LAPORAN ======================
 Route::get('/laporan', function () {
-    return "Halaman Laporan";
+    // Arahkan ke view laporan yang sesuai
+    return view('laporan.index'); 
 })->name('laporan.index');
+
+// Hapus rute lama yang tidak terpakai
+// Route::get('/kategori/{kategori}/barang', [BarangController::class, 'showByCategory'])->name('barang.by_category');
+// Route::get('/api/products', [PenjualanController::class, 'fetchProducts'])->name('products.fetch');

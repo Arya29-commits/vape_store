@@ -34,7 +34,7 @@
             <li class="dropdown">
                 <a href="#"><i class="fa-solid fa-right-left"></i> Transaksi <i class="fa-solid fa-caret-down"></i></a>
                 <div class="dropdown-content">
-                    <a href="{{ route('penjualan.create') }}">Input Penjualan</a>
+                   <a href="{{ route('penjualan.create') }}">Input Penjualan</a>
                     <a href="{{ route('pembelian.create') }}">Input Pembelian</a>
                 </div>
             </li>

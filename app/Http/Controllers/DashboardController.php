@@ -45,7 +45,15 @@ class DashboardController extends Controller
             ];
         });
 
-        $logAktivitas = $logPenjualan->merge($logBarang)->sortByDesc('waktu')->take(5);
+        // Ambil array mentah dari hasil map
+$logPenjualanArray = $logPenjualan->all();
+$logBarangArray = $logBarang->all();
+
+// Gabungkan keduanya sebagai array biasa menggunakan fungsi PHP
+$logGabungan = array_merge($logPenjualanArray, $logBarangArray);
+
+// Buat koleksi BARU dari array yang sudah digabung, lalu urutkan
+$logAktivitas = collect($logGabungan)->sortByDesc('waktu')->take(5);
 
         return view('dashboard', [
             'pendapatanHariIni' => $pendapatanHariIni,
